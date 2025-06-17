@@ -47,7 +47,7 @@ export const AuthProvider = ({ children }) => {
         };
 
         initializeAuth();
-    }, [token]);
+    }, [token, logout]);
 
     // 로그인
     const login = async (email, password) => {
