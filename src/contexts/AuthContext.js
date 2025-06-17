@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 
 const AuthContext = createContext();
@@ -24,6 +24,13 @@ export const AuthProvider = ({ children }) => {
             delete axios.defaults.headers.common['Authorization'];
         }
     };
+
+    const logout = useCallback(() => {
+        setUser(null);
+        setToken(null);
+        localStorage.removeItem('token');
+        setupAxios(null);
+    }, []);
 
     // 초기 로드 시 토큰 검증
     useEffect(() => {
@@ -98,14 +105,6 @@ export const AuthProvider = ({ children }) => {
                 error: error.response?.data?.error || '회원가입에 실패했습니다.' 
             };
         }
-    };
-
-    // 로그아웃
-    const logout = () => {
-        setUser(null);
-        setToken(null);
-        localStorage.removeItem('token');
-        setupAxios(null);
     };
 
     // 토큰 갱신
